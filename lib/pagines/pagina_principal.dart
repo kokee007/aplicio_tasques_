@@ -1,3 +1,4 @@
+import 'package:aplicio_tasques_/components/dialog_nova_tasca.dart';
 import 'package:aplicio_tasques_/components/item_tasca.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +11,18 @@ class PaginaPrincipal extends StatefulWidget {
 
 class _PaginaPrincipalState extends State<PaginaPrincipal> {
   List tasquesLLista = [
-    {"títol": "Tasca 1","valor": false,},
-    {"títol": "Tasca 2","valor": true,},
-    {"títol": "Tasca 3","valor": true,},
+    {
+      "títol": "Tasca 1",
+      "valor": false,
+    },
+    {
+      "títol": "Tasca 2",
+      "valor": true,
+    },
+    {
+      "títol": "Tasca 3",
+      "valor": true,
+    },
   ];
 
   void canviaCheckbox(bool valorCheckbox, int posLlista) {
@@ -21,12 +31,20 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     });
   }
 
-  void accioEsborrarTasca(int posLlista){
+  void accioEsborrarTasca(int posLlista) {
     setState(() {
       tasquesLLista.removeAt(posLlista);
     });
   }
 
+  void crearNovaTasca() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const DialogNovaTasca();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +64,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.teal[300],
         shape: CircleBorder(),
-        onPressed: () {},
+        onPressed: crearNovaTasca,
         child: Icon(
           Icons.add,
           color: Colors.orange[200],
@@ -58,11 +76,11 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
         itemCount: tasquesLLista.length,
         itemBuilder: (context, index) {
           return ItemTasca(
-            textTasca:tasquesLLista[index]["títol"],// "Tasca",
+            textTasca: tasquesLLista[index]["títol"], // "Tasca",
             valorCheckbox: tasquesLLista[index]["valor"],
             canviaValorCheckbox: (valor) => canviaCheckbox(
-            tasquesLLista[index]["valor"],
-            index,
+              tasquesLLista[index]["valor"],
+              index,
             ),
             esborrarTasca: (valor) => accioEsborrarTasca(index),
           );
