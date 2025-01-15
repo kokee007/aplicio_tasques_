@@ -3,7 +3,9 @@ import 'package:aplicio_tasques_/components/item_tasca.dart';
 import 'package:flutter/material.dart';
 
 class PaginaPrincipal extends StatefulWidget {
-  const PaginaPrincipal({super.key});
+  const PaginaPrincipal({
+    super.key,
+  });
 
   @override
   State<PaginaPrincipal> createState() => _PaginaPrincipalState();
@@ -12,18 +14,36 @@ class PaginaPrincipal extends StatefulWidget {
 class _PaginaPrincipalState extends State<PaginaPrincipal> {
   List tasquesLLista = [
     {
-      "títol": "Tasca 1",
+      "titol": "Tasca 1",
       "valor": false,
     },
     {
-      "títol": "Tasca 2",
-      "valor": true,
+      "titol": "Tasca 2",
+      "valor": false,
     },
     {
-      "títol": "Tasca 3",
-      "valor": true,
+      "titol": "Tasca 3",
+      "valor": false,
     },
   ];
+
+  TextEditingController tecTexTasca = TextEditingController();
+
+  void accioGuardar() {
+    setState(() {
+      tasquesLLista.add({
+        "titol": tecTexTasca.text,
+        "valor": false,
+      });
+    });
+    accioCancelar();
+  }
+
+  void accioCancelar() {
+    print("Hik");
+    Navigator.of(context).pop();
+    tecTexTasca.clear();
+  }
 
   void canviaCheckbox(bool valorCheckbox, int posLlista) {
     setState(() {
@@ -41,7 +61,11 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     showDialog(
       context: context,
       builder: (context) {
-        return const DialogNovaTasca();
+        return DialogNovaTasca(
+          tecTexTasca: tecTexTasca,
+          accioGuardar: accioGuardar,
+          accioCancelar: accioCancelar,
+        );
       },
     );
   }
@@ -76,7 +100,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
         itemCount: tasquesLLista.length,
         itemBuilder: (context, index) {
           return ItemTasca(
-            textTasca: tasquesLLista[index]["títol"], // "Tasca",
+            textTasca: tasquesLLista[index]["titol"], // "Tasca",
             valorCheckbox: tasquesLLista[index]["valor"],
             canviaValorCheckbox: (valor) => canviaCheckbox(
               tasquesLLista[index]["valor"],
